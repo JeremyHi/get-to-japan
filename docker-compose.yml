@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    ports:
+      - "127.0.0.1:3001:3001"
+    environment:
+      - INTERNAL_API_URL=http://backend:3000
+      - NODE_ENV=production
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+        reservations:
+          memory: 192M
+    networks:
+      - gettojapan
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      - DATABASE_PATH=/data/data.db
+      - REDIS_URL=redis://scraper:6379
+      - JWT_SECRET=${JWT_SECRET:-development-secret-change-in-production}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY:-sk_test_placeholder}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET:-}
+      - RESEND_API_KEY=${RESEND_API_KEY:-}
+      - CORS_ORIGIN=http://localhost:3001
+      - NODE_ENV=production
+    volumes:
+      - backend-data:/data
+    depends_on:
+      scraper:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+    networks:
+      - gettojapan
+
+  scraper:
+    build:
+      context: .
+      dockerfile: docker/scraper/Dockerfile
+    ports:
+      - "127.0.0.1:6379:6379"
+    environment:
+      - REDIS_PORT=6379
+      - SCRAPE_INTERVAL_HOURS=4
+      - BACKEND_URL=http://backend:3000
+    volumes:
+      - scraper-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+    networks:
+      - gettojapan
+
+volumes:
+  backend-data:
+  scraper-data:
+
+networks:
+  gettojapan:
+    name: gettojapan

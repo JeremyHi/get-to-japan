@@ -1,0 +1,556 @@
+@import 'tailwindcss';
+
+/* ============================================
+   GET TO JAPAN - Design System
+   Japanese Precision Meets Modern Minimalism
+   ============================================ */
+
+@theme {
+  /* Color Palette - Deep Indigo + Sakura */
+  --color-indigo-950: #0a0e1a;
+  --color-indigo-900: #111827;
+  --color-indigo-800: #1e293b;
+  --color-indigo-700: #334155;
+  --color-indigo-600: #475569;
+  --color-indigo-500: #64748b;
+  --color-indigo-400: #94a3b8;
+  --color-indigo-300: #cbd5e1;
+  --color-indigo-200: #e2e8f0;
+  --color-indigo-100: #f1f5f9;
+  --color-indigo-50: #f8fafc;
+
+  /* Sakura Pink Accent */
+  --color-sakura-500: #f472b6;
+  --color-sakura-400: #f8b4c8;
+  --color-sakura-300: #fbcfe8;
+  --color-sakura-200: #fce7f3;
+
+  /* Ocean Blue (for flights/sky) */
+  --color-ocean-600: #0284c7;
+  --color-ocean-500: #0ea5e9;
+  --color-ocean-400: #38bdf8;
+  --color-ocean-300: #7dd3fc;
+
+  /* Success/Warning/Error */
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+
+  /* Spacing Scale (8px base) */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-10: 2.5rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-glow: 0 0 20px rgb(244 114 182 / 0.3);
+
+  /* Typography */
+  --font-display: 'Outfit', system-ui, sans-serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+}
+
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Outfit:wght@100..900&display=swap');
+
+/* Base styles */
+html {
+  font-family: var(--font-body);
+  background: var(--color-indigo-950);
+  color: var(--color-indigo-100);
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(
+    180deg,
+    var(--color-indigo-950) 0%,
+    var(--color-indigo-900) 50%,
+    var(--color-indigo-950) 100%
+  );
+}
+
+/* ============================================
+   Typography Classes
+   ============================================ */
+
+.text-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.text-heading-1 {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.text-heading-2 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.text-heading-3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.text-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-sakura-400);
+}
+
+.text-body {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-indigo-300);
+}
+
+.text-muted {
+  color: var(--color-indigo-500);
+}
+
+/* ============================================
+   Card Components
+   ============================================ */
+
+.card {
+  background: var(--color-indigo-900);
+  border: 1px solid var(--color-indigo-800);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-6);
+}
+
+.card-elevated {
+  background: linear-gradient(
+    135deg,
+    var(--color-indigo-900) 0%,
+    var(--color-indigo-800) 100%
+  );
+  border: 1px solid var(--color-indigo-700);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-lg);
+}
+
+.card-interactive {
+  background: var(--color-indigo-900);
+  border: 1px solid var(--color-indigo-800);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-6);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.card-interactive:hover {
+  border-color: var(--color-sakura-500);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-2px);
+}
+
+.card-result {
+  background: var(--color-indigo-900);
+  border: 1px solid var(--color-indigo-800);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-5);
+  transition: all 0.2s ease;
+}
+
+.card-result:hover {
+  border-color: var(--color-indigo-600);
+}
+
+.card-result.recommended {
+  border-color: var(--color-sakura-500);
+  background: linear-gradient(
+    135deg,
+    var(--color-indigo-900) 0%,
+    rgba(244, 114, 182, 0.05) 100%
+  );
+}
+
+/* ============================================
+   Button System
+   ============================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  font-family: var(--font-display);
+  font-weight: 500;
+  border-radius: var(--radius-lg);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-sakura-500) 0%, var(--color-sakura-400) 100%);
+  color: var(--color-indigo-950);
+  padding: var(--spacing-3) var(--spacing-6);
+  font-size: 1rem;
+}
+
+.btn-primary:hover {
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--color-indigo-800);
+  color: var(--color-indigo-100);
+  border: 1px solid var(--color-indigo-700);
+  padding: var(--spacing-3) var(--spacing-6);
+  font-size: 1rem;
+}
+
+.btn-secondary:hover {
+  background: var(--color-indigo-700);
+  border-color: var(--color-indigo-600);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-indigo-300);
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: 0.875rem;
+}
+
+.btn-ghost:hover {
+  background: var(--color-indigo-800);
+  color: var(--color-indigo-100);
+}
+
+.btn-sm {
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: 0.875rem;
+}
+
+.btn-lg {
+  padding: var(--spacing-4) var(--spacing-8);
+  font-size: 1.125rem;
+}
+
+/* ============================================
+   Form Elements
+   ============================================ */
+
+.input {
+  background: var(--color-indigo-950);
+  border: 1px solid var(--color-indigo-700);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-3) var(--spacing-4);
+  color: var(--color-indigo-100);
+  font-size: 1rem;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-sakura-500);
+  box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.1);
+}
+
+.input::placeholder {
+  color: var(--color-indigo-500);
+}
+
+.select {
+  background: var(--color-indigo-950);
+  border: 1px solid var(--color-indigo-700);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-3) var(--spacing-4);
+  color: var(--color-indigo-100);
+  font-size: 1rem;
+  width: 100%;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--spacing-3) center;
+  background-size: 1.25rem;
+  padding-right: var(--spacing-10);
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-sakura-500);
+  box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.1);
+}
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-3);
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-4);
+  background: var(--color-indigo-900);
+  border: 1px solid var(--color-indigo-700);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.checkbox-item:hover {
+  border-color: var(--color-indigo-600);
+}
+
+.checkbox-item.selected {
+  background: rgba(244, 114, 182, 0.1);
+  border-color: var(--color-sakura-500);
+}
+
+.radio-group {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.radio-item {
+  padding: var(--spacing-2) var(--spacing-4);
+  background: var(--color-indigo-900);
+  border: 1px solid var(--color-indigo-700);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  color: var(--color-indigo-300);
+}
+
+.radio-item:hover {
+  border-color: var(--color-indigo-600);
+}
+
+.radio-item.selected {
+  background: var(--color-sakura-500);
+  border-color: var(--color-sakura-500);
+  color: var(--color-indigo-950);
+  font-weight: 500;
+}
+
+/* ============================================
+   Layout Utilities
+   ============================================ */
+
+.container-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-4);
+}
+
+.section {
+  padding: var(--spacing-16) 0;
+}
+
+.section-hero {
+  padding: var(--spacing-24) 0;
+  text-align: center;
+}
+
+/* ============================================
+   Gradient & Effects
+   ============================================ */
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-sakura-400) 0%, var(--color-ocean-400) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-border {
+  position: relative;
+  background: var(--color-indigo-900);
+  border-radius: var(--radius-xl);
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(135deg, var(--color-sakura-500) 0%, var(--color-ocean-500) 100%);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.glass {
+  background: rgba(17, 24, 39, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-indigo-800);
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-indigo-800) 0%,
+    var(--color-indigo-700) 50%,
+    var(--color-indigo-800) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(244, 114, 182, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(244, 114, 182, 0.5);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+.divider {
+  height: 1px;
+  background: var(--color-indigo-800);
+  margin: var(--spacing-6) 0;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-3);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  background: var(--color-indigo-800);
+  color: var(--color-indigo-300);
+}
+
+.badge-sakura {
+  background: rgba(244, 114, 182, 0.2);
+  color: var(--color-sakura-400);
+}
+
+.badge-success {
+  background: rgba(34, 197, 94, 0.2);
+  color: var(--color-success);
+}
+
+.badge-warning {
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--color-warning);
+}
+
+/* Value indicator for points */
+.value-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-size: 0.875rem;
+  color: var(--color-success);
+  font-weight: 500;
+}
+
+.value-indicator.high {
+  color: var(--color-success);
+}
+
+.value-indicator.medium {
+  color: var(--color-warning);
+}
+
+.value-indicator.low {
+  color: var(--color-indigo-400);
+}
+
+/* ============================================
+   Scrollbar Styling
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-indigo-950);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-indigo-700);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-indigo-600);
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(244, 114, 182, 0.3);
+  color: var(--color-indigo-100);
+}

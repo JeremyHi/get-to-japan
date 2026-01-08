@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - INTERNAL_API_URL=http://backend:3000
+      - NODE_ENV=development
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - gettojapan-dev
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_PATH=/data/data.db
+      - REDIS_URL=redis://scraper:6379
+      - JWT_SECRET=dev-secret-not-for-production
+      - STRIPE_SECRET_KEY=sk_test_placeholder
+      - CORS_ORIGIN=http://localhost:3001
+      - NODE_ENV=development
+    volumes:
+      - ./data:/data
+    depends_on:
+      scraper:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+    networks:
+      - gettojapan-dev
+
+  scraper:
+    build:
+      context: .
+      dockerfile: docker/scraper/Dockerfile
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PORT=6379
+      - SCRAPE_INTERVAL_HOURS=4
+      - BACKEND_URL=http://backend:3000
+    volumes:
+      - scraper-dev-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+    networks:
+      - gettojapan-dev
+
+volumes:
+  scraper-dev-data:
+
+networks:
+  gettojapan-dev:
+    name: gettojapan-dev
