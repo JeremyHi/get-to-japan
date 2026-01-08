@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Plane, Calendar, CreditCard, Search, ChevronDown, Users } from 'lucide-react';
+import { Plane, CreditCard, Search, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import DatePicker from './DatePicker';
 
 const ORIGIN_OPTIONS = [
   { value: 'NYC', label: 'New York (JFK + EWR)', airports: ['JFK', 'EWR'] },
@@ -68,6 +69,14 @@ export default function SearchForm({ onSearch }: SearchFormProps) {
     }));
   };
 
+  // Calculate min date for return (must be after departure)
+  const getReturnMinDate = () => {
+    if (!formData.departureDate) return new Date();
+    const departure = new Date(formData.departureDate);
+    departure.setDate(departure.getDate() + 1);
+    return departure;
+  };
+
   return (
     <motion.form
       initial={{ opacity: 0, y: 20 }}
@@ -80,11 +89,11 @@ export default function SearchForm({ onSearch }: SearchFormProps) {
       <div className="mb-6">
         <label className="block text-eyebrow mb-2">Where are you flying from?</label>
         <div className="relative">
-          <Plane className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-indigo-500)]" />
+          <Plane className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-indigo-500)] pointer-events-none z-10" />
           <select
             value={formData.origin}
             onChange={(e) => setFormData(prev => ({ ...prev, origin: e.target.value }))}
-            className="select pl-12"
+            className="select pl-14"
           >
             {ORIGIN_OPTIONS.map(option => (
               <option key={option.value} value={option.value}>
@@ -98,33 +107,25 @@ export default function SearchForm({ onSearch }: SearchFormProps) {
         </p>
       </div>
 
-      {/* Date Selection */}
+      {/* Date Selection with Custom DatePicker */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div>
           <label className="block text-eyebrow mb-2">Departure</label>
-          <div className="relative">
-            <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-indigo-500)]" />
-            <input
-              type="date"
-              value={formData.departureDate}
-              onChange={(e) => setFormData(prev => ({ ...prev, departureDate: e.target.value }))}
-              className="input pl-12"
-              required
-            />
-          </div>
+          <DatePicker
+            value={formData.departureDate}
+            onChange={(date) => setFormData(prev => ({ ...prev, departureDate: date }))}
+            placeholder="Select departure"
+            minDate={new Date()}
+          />
         </div>
         <div>
           <label className="block text-eyebrow mb-2">Return</label>
-          <div className="relative">
-            <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-indigo-500)]" />
-            <input
-              type="date"
-              value={formData.returnDate}
-              onChange={(e) => setFormData(prev => ({ ...prev, returnDate: e.target.value }))}
-              className="input pl-12"
-              required
-            />
-          </div>
+          <DatePicker
+            value={formData.returnDate}
+            onChange={(date) => setFormData(prev => ({ ...prev, returnDate: date }))}
+            placeholder="Select return"
+            minDate={getReturnMinDate()}
+          />
         </div>
       </div>
 
@@ -228,11 +229,11 @@ export default function SearchForm({ onSearch }: SearchFormProps) {
         <div>
           <label className="block text-eyebrow mb-2">Passengers</label>
           <div className="relative">
-            <Users className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-indigo-500)]" />
+            <Users className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-indigo-500)] pointer-events-none z-10" />
             <select
               value={formData.passengers}
               onChange={(e) => setFormData(prev => ({ ...prev, passengers: parseInt(e.target.value) }))}
-              className="select pl-12"
+              className="select pl-14"
             >
               {[1, 2, 3, 4, 5, 6].map(num => (
                 <option key={num} value={num}>
