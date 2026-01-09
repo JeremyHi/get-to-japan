@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
+import Providers from '@/components/Providers';
 
 export const metadata: Metadata = {
   title: 'Just Get Me There | Find the Best Flights with Points & Cash',
@@ -15,9 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="min-h-screen flex flex-col">
-          {children}
-        </div>
+        <Providers>
+          <div className="min-h-screen flex flex-col">
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );
