@@ -34,9 +34,10 @@ const PLANS = [
     id: 'pro',
     name: 'Pathfinder',
     tagline: 'Most popular',
-    price: 9,
+    price: 9.99,
     period: 'month',
-    yearlyPrice: 89,
+    yearlyPrice: 99.90,
+    yearlySavings: '2 months free',
     description: 'For frequent travelers who want the best deals and premium cabin access.',
     features: [
       { text: 'Unlimited searches', included: true },
@@ -57,9 +58,8 @@ const PLANS = [
     id: 'business',
     name: 'Navigator',
     tagline: 'For power users',
-    price: 29,
+    price: 40,
     period: 'month',
-    yearlyPrice: 290,
     description: 'For travel hackers and points enthusiasts who maximize every redemption.',
     features: [
       { text: 'Everything in Pathfinder', included: true },
@@ -138,13 +138,13 @@ export default function PricingPage() {
               </p>
 
               {/* Billing Toggle */}
-              <div className="inline-flex items-center gap-3 bg-[var(--color-indigo-900)] p-1 rounded-full">
+              <div className="inline-flex items-center gap-3 bg-[var(--color-indigo-900)] p-1.5 rounded-full border border-[var(--color-indigo-700)]">
                 <button
                   onClick={() => setBillingCycle('monthly')}
                   className={cn(
-                    "px-5 py-2 rounded-full text-sm font-medium transition-all",
+                    "px-6 py-2.5 rounded-full text-sm font-medium transition-all",
                     billingCycle === 'monthly'
-                      ? "bg-[var(--color-indigo-700)] text-[var(--color-indigo-100)]"
+                      ? "bg-[var(--color-indigo-700)] text-[var(--color-indigo-100)] shadow-lg"
                       : "text-[var(--color-indigo-400)] hover:text-[var(--color-indigo-200)]"
                   )}
                 >
@@ -153,15 +153,15 @@ export default function PricingPage() {
                 <button
                   onClick={() => setBillingCycle('yearly')}
                   className={cn(
-                    "px-5 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2",
+                    "px-6 py-2.5 rounded-full text-sm font-medium transition-all flex items-center gap-2",
                     billingCycle === 'yearly'
-                      ? "bg-[var(--color-indigo-700)] text-[var(--color-indigo-100)]"
+                      ? "bg-[var(--color-indigo-700)] text-[var(--color-indigo-100)] shadow-lg"
                       : "text-[var(--color-indigo-400)] hover:text-[var(--color-indigo-200)]"
                   )}
                 >
                   Yearly
-                  <span className="text-xs bg-[var(--color-sakura-500)] text-[var(--color-indigo-950)] px-2 py-0.5 rounded-full font-semibold">
-                    Save 17%
+                  <span className="text-xs bg-gradient-to-r from-[var(--color-sakura-500)] to-[var(--color-sakura-400)] text-[var(--color-indigo-950)] px-2.5 py-1 rounded-full font-bold shadow-sm">
+                    2 months free
                   </span>
                 </button>
               </div>
@@ -210,18 +210,29 @@ export default function PricingPage() {
                       <div className="flex items-baseline gap-1">
                         <span className="text-4xl font-display font-bold text-[var(--color-indigo-100)]">
                           ${billingCycle === 'yearly' && plan.yearlyPrice
-                            ? Math.round(plan.yearlyPrice / 12)
-                            : plan.price}
+                            ? (plan.yearlyPrice / 12).toFixed(2).replace(/\.00$/, '')
+                            : plan.price % 1 === 0 ? plan.price : plan.price.toFixed(2)}
                         </span>
                         {plan.price > 0 && (
                           <span className="text-[var(--color-indigo-500)]">/month</span>
                         )}
                       </div>
-                      {billingCycle === 'yearly' && plan.yearlyPrice && (
+                      {plan.id === 'business' ? (
                         <p className="text-sm text-[var(--color-indigo-500)] mt-1">
-                          ${plan.yearlyPrice} billed annually
+                          Custom pricing available
                         </p>
-                      )}
+                      ) : billingCycle === 'yearly' && plan.yearlyPrice ? (
+                        <div className="mt-2">
+                          <p className="text-sm text-[var(--color-indigo-400)]">
+                            ${plan.yearlyPrice.toFixed(2).replace(/\.00$/, '')} billed annually
+                          </p>
+                          {plan.yearlySavings && (
+                            <span className="inline-block mt-1.5 text-xs bg-[var(--color-success)]/20 text-[var(--color-success)] px-2.5 py-1 rounded-full font-semibold">
+                              {plan.yearlySavings}
+                            </span>
+                          )}
+                        </div>
+                      ) : null}
                     </div>
 
                     <p className="text-sm text-[var(--color-indigo-400)] mb-6">
