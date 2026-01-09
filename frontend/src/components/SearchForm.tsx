@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plane, CreditCard, Search, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import DatePicker from './DatePicker';
+import DateRangePicker from './DateRangePicker';
 
 const ORIGIN_OPTIONS = [
   { value: 'NYC', label: 'New York (JFK + EWR)', airports: ['JFK', 'EWR'] },
@@ -69,14 +69,6 @@ export default function SearchForm({ onSearch }: SearchFormProps) {
     }));
   };
 
-  // Calculate min date for return (must be after departure)
-  const getReturnMinDate = () => {
-    if (!formData.departureDate) return new Date();
-    const departure = new Date(formData.departureDate);
-    departure.setDate(departure.getDate() + 1);
-    return departure;
-  };
-
   return (
     <motion.form
       initial={{ opacity: 0, y: 20 }}
@@ -93,7 +85,7 @@ export default function SearchForm({ onSearch }: SearchFormProps) {
           <select
             value={formData.origin}
             onChange={(e) => setFormData(prev => ({ ...prev, origin: e.target.value }))}
-            className="select pl-14"
+            className="select select-with-icon"
           >
             {ORIGIN_OPTIONS.map(option => (
               <option key={option.value} value={option.value}>
@@ -107,26 +99,16 @@ export default function SearchForm({ onSearch }: SearchFormProps) {
         </p>
       </div>
 
-      {/* Date Selection with Custom DatePicker */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div>
-          <label className="block text-eyebrow mb-2">Departure</label>
-          <DatePicker
-            value={formData.departureDate}
-            onChange={(date) => setFormData(prev => ({ ...prev, departureDate: date }))}
-            placeholder="Select departure"
-            minDate={new Date()}
-          />
-        </div>
-        <div>
-          <label className="block text-eyebrow mb-2">Return</label>
-          <DatePicker
-            value={formData.returnDate}
-            onChange={(date) => setFormData(prev => ({ ...prev, returnDate: date }))}
-            placeholder="Select return"
-            minDate={getReturnMinDate()}
-          />
-        </div>
+      {/* Date Selection with Date Range Picker */}
+      <div className="mb-6">
+        <label className="block text-eyebrow mb-2">Travel Dates</label>
+        <DateRangePicker
+          departureDate={formData.departureDate}
+          returnDate={formData.returnDate}
+          onDepartureDateChange={(date) => setFormData(prev => ({ ...prev, departureDate: date }))}
+          onReturnDateChange={(date) => setFormData(prev => ({ ...prev, returnDate: date }))}
+          minDate={new Date()}
+        />
       </div>
 
       {/* Flexible Dates Toggle */}
@@ -233,7 +215,7 @@ export default function SearchForm({ onSearch }: SearchFormProps) {
             <select
               value={formData.passengers}
               onChange={(e) => setFormData(prev => ({ ...prev, passengers: parseInt(e.target.value) }))}
-              className="select pl-14"
+              className="select select-with-icon"
             >
               {[1, 2, 3, 4, 5, 6].map(num => (
                 <option key={num} value={num}>

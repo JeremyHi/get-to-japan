@@ -306,6 +306,10 @@ body {
   padding-right: var(--spacing-10);
 }
 
+.select-with-icon {
+  padding-left: 3rem;
+}
+
 .select:focus {
   outline: none;
   border-color: var(--color-sakura-500);

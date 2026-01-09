@@ -6,6 +6,8 @@ import Header from '@/components/Header';
 import SearchForm from '@/components/SearchForm';
 import AnimatedDestination from '@/components/AnimatedDestination';
 import { useRouter } from 'next/navigation';
+import { generateSearchId } from '@/lib/utils';
+import { saveSearch } from '@/lib/searchStore';
 
 const features = [
   {
@@ -57,18 +59,19 @@ export default function HomePage() {
   const router = useRouter();
 
   const handleSearch = (data: any) => {
-    // Build query string and navigate to results
-    const params = new URLSearchParams({
+    // Generate unique search ID and save search params
+    const searchId = generateSearchId();
+    saveSearch(searchId, {
       origin: data.origin,
-      departure: data.departureDate,
-      return: data.returnDate,
-      payment: data.paymentType,
-      cabin: data.cabinClass,
-      passengers: data.passengers.toString(),
-      flexible: data.flexibleDates.toString(),
-      programs: data.selectedPrograms.join(','),
+      departureDate: data.departureDate,
+      returnDate: data.returnDate,
+      paymentType: data.paymentType,
+      selectedPrograms: data.selectedPrograms,
+      cabinClass: data.cabinClass,
+      passengers: data.passengers,
+      flexibleDates: data.flexibleDates,
     });
-    router.push(`/results?${params.toString()}`);
+    router.push(`/results/${searchId}`);
   };
 
   return (
